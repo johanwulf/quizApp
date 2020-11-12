@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Sant eller falskt quiz"
         android:textSize="30dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
