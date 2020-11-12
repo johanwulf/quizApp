@@ -1,3 +1,3 @@
-## <center>quizApp</center>
+<center>quizApp</center>
 
 -----
