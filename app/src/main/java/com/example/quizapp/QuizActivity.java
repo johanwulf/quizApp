@@ -14,10 +14,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class QuizActivity extends AppCompatActivity {
-    private ArrayList<Integer> answerList;
-    private ArrayList<String> questionList;
+    private ArrayList<Question> questionList;
     private int qIndex = 0;
 
     TextView questionText;
@@ -30,19 +30,18 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        Bundle b = this.getIntent().getExtras();
-        questionList = b.getStringArrayList("questionList");
-        answerList = b.getIntegerArrayList("answerList");
+        questionList = this.getIntent().getParcelableArrayListExtra("questionList");
+        Collections.shuffle(questionList);
 
         questionText = (TextView) findViewById(R.id.textView_question);
         trueButton = (Button) findViewById(R.id.button_true);
         falseButton = (Button) findViewById(R.id.button_false);
 
-        questionText.setText(questionList.get(0));
+        questionText.setText(questionList.get(qIndex).getQuestion());
 
         trueButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(answerList.get(qIndex) == 1) {
+                if(questionList.get(qIndex).checkAnswer(true)) {
                     score++;
                 }
 
@@ -52,7 +51,7 @@ public class QuizActivity extends AppCompatActivity {
 
         falseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(answerList.get(qIndex) == 0) {
+                if(questionList.get(qIndex).checkAnswer(false)) {
                     score++;
                 }
 
@@ -67,7 +66,7 @@ public class QuizActivity extends AppCompatActivity {
         if(qIndex > questionList.size()-1) {
             gameOver();
         } else {
-            questionText.setText(questionList.get(qIndex));
+            questionText.setText(questionList.get(qIndex).getQuestion());
         }
     }
 
@@ -84,7 +83,7 @@ public class QuizActivity extends AppCompatActivity {
                                 finish();
                             }
                         })
-                .setNegativeButton("Stäng spel",
+                .setNegativeButton("Stäng quiz",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

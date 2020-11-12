@@ -17,13 +17,11 @@ public class MainActivity extends AppCompatActivity {
 
     EditText questionInput;
     Switch answerInput;
-
     Button addQuestion;
     Button startQuiz;
 
-    int questionAnswer;
-    ArrayList<Integer> answerList = new ArrayList<>();
-    ArrayList<String> questionList = new ArrayList<>();
+    ArrayList<Question> questionList = new ArrayList<>();
+    boolean questionAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,41 +33,33 @@ public class MainActivity extends AppCompatActivity {
         addQuestion = (Button) findViewById(R.id.button_add_question);
         startQuiz = (Button) findViewById(R.id.button_start_quiz);
 
-        // check true/false input
         answerInput.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    questionAnswer = 1;
+                    questionAnswer = true;
                 } else {
-                    questionAnswer = 0;
+                    questionAnswer = false;
                 }
             }
         });
 
-        // add question
         addQuestion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                questionList.add(questionInput.getText().toString());
-                answerList.add(questionAnswer);
+                questionList.add(new Question(questionInput.getText().toString(), questionAnswer));
 
                 showMessage();
 
                 questionInput.setText("");
                 questionInput.setHint("Skriv fråga");
                 answerInput.setChecked(false);
-
             }
         });
 
         startQuiz.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putStringArrayList("questionList", questionList);
-                b.putIntegerArrayList("answerList", answerList);
-
                 Intent i = new Intent(MainActivity.this, QuizActivity.class);
+                i.putParcelableArrayListExtra("questionList", questionList);
 
-                i.putExtras(b);
                 startActivity(i);
                 finish();
             }
