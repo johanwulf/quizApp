@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-//hejehk
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
